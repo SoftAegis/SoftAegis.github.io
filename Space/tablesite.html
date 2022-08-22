@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<!--This one is written by Andrew (Drew) Headrick-->
+<html>
+<audio id="BGM" preload loop src="KlaxonBeat.mp3"></audio>
+<audio id="Station" preload src="lab.mp3"></audio>
+<head>
+    <link href="Tablestyle.css" rel="stylesheet" type="text/css" />
+    <script src="javacode.js"></script>
+    <script src="dataLoader.js"></script>
+    <title>--
+        UAT Space Program
+    </title>
+    <script>
+        /*variables required for the document object models*/
+        var theTime = new Date();
+        var tempTime = new Date();
+        var timeInterval = 5000;
+        var lastIteration = 0;
+        var running = true;
+        var index = 0;
+        var timer;
+        var BGM = document.getElementById("BGM");
+        var Lab = document.getElementById("Station");
+        
+        Lab.onended = function (){
+            BGM.play();
+        }
+
+        function playAudio(){
+            Lab.play();
+            BGM.pause();
+        }
+        
+        /*next parts help to load data from dataLoader.js into the index*/
+        var data = getData();
+
+        function updateDisplay(){
+            theTime = new Date();
+            console.log(index);
+            var timeRead = data[index].seconds;
+            if(timeRead >=10){
+                document.getElementById("data").rows["seconds"].innerHTML = dataRow("Time Elapsed", data[index].seconds, "seconds");
+                document.getElementById("data").rows["latitude"].innerHTML = dataRow("Latitude", data[index].latitude, "");
+                document.getElementById("data").rows["longitude"].innerHTML = dataRow("Longitude", data[index].longitude, "");
+                document.getElementById("data").rows["gpsAltitude"].innerHTML = dataRow("GPS Altitude", data[index].gpsAltitude, "M");
+                document.getElementById("data").rows["bmpSensorAltitude"].innerHTML = dataRow("BMP Sensor Altitude", data[index].bmpSensorAltitude, "M");
+                document.getElementById("data").rows["bmpSensorPressure"].innerHTML = dataRow("BMP Sensor Pressure", data[index].bmpSensorPressure, "N");
+                document.getElementById("data").rows["bmpSensorTemperature"].innerHTML = dataRow("BMP Sensor Temperature", data[index].bmpSensorTemperature, "F");
+                document.getElementById("data").rows["digitalSensorTemperature"].innerHTML = dataRow("Digital Sensor Temperature", data[index].digitalSensorTemperature, "F");
+                document.getElementById("data").rows["cssSensorTemperature"].innerHTML = dataRow("CSS Sensor Temperature", data[index].cssSensorTemperature, "F");
+                document.getElementById("data").rows["cssSensorEC02"].innerHTML = dataRow("CSS Sensor e602", data[index].cssSensorEC02, "");
+                document.getElementById("data").rows["cssSensorTVOC"].innerHTML = dataRow("CSS Sensor TVOC", data[index].cssSensorTVOC, "");
+                document.getElementById("data").rows["UV"].innerHTML = dataRow("UV", data[index].UV, "");
+                document.getElementById("data").rows["accelX"].innerHTML = dataRow("Accel X", data[index].accelX, "M/S");
+                document.getElementById("data").rows["accelY"].innerHTML = dataRow("Accel Y", data[index].accelY, "M/S");
+                document.getElementById("data").rows["accelZ"].innerHTML = dataRow("Accel Z", data[index].accelZ, "M/S");
+                document.getElementById("data").rows["magneticX"].innerHTML = dataRow("Magnetic X", data[index].magneticX, "");
+                document.getElementById("data").rows["magneticY"].innerHTML = dataRow("Magnetic Y", data[index].magneticY, "");
+                document.getElementById("data").rows["magneticZ"].innerHTML = dataRow("Magnetic Z", data[index].magneticZ, "");
+                document.getElementById("data").rows["gyroX"].innerHTML = dataRow("Gyro X", data[index].gyroX, "°");
+                document.getElementById("data").rows["gyroY"].innerHTML = dataRow("Gyro Y", data[index].gyroY, "°");
+                document.getElementById("data").rows["gyroZ"].innerHTML = dataRow("Gyro Z", data[index].gyroZ, "°");
+            }
+            if(index < 501){
+                index = index + 1;
+            }else{
+                index = 0;
+            }
+            document.getElementById("time").innerHTML = theTime.getHours() +":"+ (theTime.getMinutes() < 10 ? "0"+ theTime.getMinutes():theTime.getMinutes()) +":"+ (theTime.getSeconds() < 10 ? "0"+ theTime.getSeconds():theTime.getSeconds());
+        }
+    </script>
+</head>
+
+<body>
+    
+    <table>
+        <td>
+            <img src="UATspaceLogo.png">
+        </td>
+        <td>
+            <h1>UAT Space Program</h1>
+        </td>
+    </table>
+    <br>
+    <table id="data" class="dataTable" border="2">
+        <col style="width: 35%;">
+        <col style="width:35%;">
+        <thead>
+            <tr>
+                <th>
+                    Data Type
+                </th>
+                <th>
+                    Reading
+                </th>
+            </tr>
+        </thead>
+        <!--Creates the actual table itself and the IDs for the rows-->
+        <tbody>
+            <tr id="seconds"><td>Time Elapsed:</td><td>0</td></tr>
+            <tr id="latitude"><td>Latitude:</td><td>0 </td></tr>
+            <tr id="longitude"><td>Longitude:</td><td>0 </td></tr>
+            <tr id="gpsAltitude"><td>GPS Altitude:</td><td>0 </td></tr>
+            <tr id="bmpSensorAltitude"><td>BMP Sensor Altitude:</td><td>0 </td></tr>
+            <tr id="bmpSensorPressure"><td>BMP Sensor Pressure:</td><td>0 </td></tr>
+            <tr id="bmpSensorTemperature"><td>BMP Sensor Temperature:</td><td>0 </td></tr>
+            <tr id="digitalSensorTemperature"><td>Digital Sensor Temperature:</td><td>0 </td></tr>
+            <tr id="cssSensorTemperature"><td>CSS Sensor Temperature:</td><td>0 </td></tr>
+            <tr id="cssSensorEC02"><td>CSS Sensor eC02:</td><td>0 </td></tr>
+            <tr id="cssSensorTVOC"><td>CSS Sensor TVOC:</td><td>0 </td></tr>
+            <tr id="UV"><td>UV:</td><td>0 </td></tr>
+            <tr id="accelX"><td>Accel X:</td><td>0 </td></tr>
+            <tr id="accelY"><td>Accel Y:</td><td>0 </td></tr>
+            <tr id="accelZ"><td>Accel Z:</td><td>0 </td></tr>
+            <tr id="magneticX"><td>Magnetic X:</td><td>0 </td></tr>
+            <tr id="magneticY"><td>Magnetic Y:</td><td>0 </td></tr>
+            <tr id="magneticZ"><td>Magnetic Z:</td><td>0 </td></tr>
+            <tr id="gyroX"><td>Gyro X:</td><td>0 </td></tr>
+            <tr id="gyroY"><td>Gyro Y:</td><td>0 </td></tr>
+            <tr id="gyroZ"><td>Gyro Z:</td><td>0 </td></tr>
+        </tbody>
+    </table>
+    <!--places the current time taken from the updateDisplay function-->
+    <p>
+        current time is: <div id="time"></div>
+    </p>
+    <br>
+    <br>
+    <br>
+    <!--places the buttons needed to run the program-->
+    <button id="startButton" class="button" onclick="start();">Start</button>
+    <button id="stopButton" class="button" onclick="stop();" disabled = true>Stop</button>
+    <br>
+    <button id="audioButton" class="button2" onclick="playAudio();"> Transmit Audio</button>
+    <br>
+</body>
+
+</html>
